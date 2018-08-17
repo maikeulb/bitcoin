@@ -15,16 +15,15 @@ def get_bitcoin_data():
     url = current_app.config['API_URL']
 
     data = requests.get(url).json()
-
     date_string_format = "%Y-%m-%dT%H:%M:%S.%fZ"
     bitcoins = []
 
-    for i in range(1, 100):
+    for i in range(0, 100):
         info = {
-            'day': i,
+            'day': i + 1,
             'price': data[i]["lastPrice"],
-            'change': "na" if i == 1 else round(data[i]["lastPrice"] - data[i - 1]["lastPrice"], 2),
-            'priceChange': "na" if i == 1 else price_change(data[i - 1]["lastPrice"],
+            'change': "na" if i == 0 else round(data[i]["lastPrice"] - data[i - 1]["lastPrice"], 2),
+            'priceChange': "na" if i == 0 else price_change(data[i - 1]["lastPrice"],
                                                             data[i]["lastPrice"]),
             'dayOfWeek': datetime.strptime(data[i]["timestamp"],
                                            date_string_format).strftime('%A'),
