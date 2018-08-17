@@ -17,32 +17,21 @@ def get_bitcoin_data():
     data = requests.get(url).json()
 
     date_string_format = "%Y-%m-%dT%H:%M:%S.%fZ"
-    bitcoin1 = {
-        'day': 1,
-        'price': data[1]["lastPrice"],
-        'change': "na" if 1 == 1 else round(data[2]["lastPrice"] - data[1]["lastPrice"], 2),
-        'priceChange': "na" if 1 == 1 else price_change(data[1]["lastPrice"],
-                                                        data[2]["lastPrice"]),
-        'dayOfWeek': datetime.strptime(data[1]["timestamp"],
-                                       date_string_format).strftime('%A'),
-        'highSinceStart': is_high_since_start(data[1]["lastPrice"]),
-        'lowSinceStart': is_low_since_start(data[1]["lastPrice"])
-    }
-    print(max_price)
-    print(min_price)
-    bitcoin2 = {
-        'day': 2,
-        'price': data[2]["lastPrice"],
-        'priceChange': "na" if 2 == 1 else price_change(data[1]["lastPrice"],
-                                                        data[2]["lastPrice"]),
-        'change': "na" if 2 == 1 else round(data[2]["lastPrice"] - data[1]["lastPrice"], 2),
-        'dayOfWeek': datetime.strptime(data[2]["timestamp"],
-                                       date_string_format).strftime('%A'),
-        'highSinceStart': is_high_since_start(data[2]["lastPrice"]),
-        'lowSinceStart': is_low_since_start(data[2]["lastPrice"])
-    }
-    bitcoins = [bitcoin1, bitcoin2]
+    bitcoins = []
 
+    for i in range(1, 100):
+        info = {
+            'day': i,
+            'price': data[i]["lastPrice"],
+            'change': "na" if i == 1 else round(data[i]["lastPrice"] - data[i - 1]["lastPrice"], 2),
+            'priceChange': "na" if i == 1 else price_change(data[i - 1]["lastPrice"],
+                                                            data[i]["lastPrice"]),
+            'dayOfWeek': datetime.strptime(data[i]["timestamp"],
+                                           date_string_format).strftime('%A'),
+            'highSinceStart': is_high_since_start(data[i]["lastPrice"]),
+            'lowSinceStart': is_low_since_start(data[i]["lastPrice"])
+        }
+        bitcoins.append(info)
     return jsonify(bitcoins), 200
 
 
