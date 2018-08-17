@@ -75,7 +75,7 @@ With docker:
 ```
 docker-compose build
 docker-compose up
-Go to http://localhost:5000 and visit one of the above endpoints
+Go to http://localhost:5000 and visit api/bitcoins
 ```
 
 Alternatively, set the `FLASK_APP` env variable
