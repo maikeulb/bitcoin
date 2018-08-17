@@ -20,7 +20,8 @@ def get_bitcoin_data():
     date_string_format = "%Y-%m-%dT%H:%M:%S.%fZ"
     bitcoins = []
 
-    for i in range(0, 100):
+    # for i in range(0, 100):
+    for i in range(100, -1, -1):
         info = {
             'day': i + 1,
             'price': data[i]["lastPrice"],
