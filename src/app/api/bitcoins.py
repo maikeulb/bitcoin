@@ -1,12 +1,14 @@
 import sys
 import requests
-import json
 from datetime import datetime
-from flask import jsonify, current_app, request
+from flask import g, jsonify, current_app
 from app.api import api
 
-max_price = -sys.maxsize - 1
-min_price = sys.maxsize
+
+@api.before_app_request
+def before_request():
+    g.max_price = -sys.maxsize - 1
+    g.min_price = sys.maxsize
 
 
 @api.route('/bitcoins')
@@ -23,10 +25,8 @@ def get_bitcoin_data():
             'day': i + 1,
             'price': data[i]["lastPrice"],
             'change': "na" if i == 0 else round(data[i]["lastPrice"] - data[i - 1]["lastPrice"], 2),
-            'priceChange': "na" if i == 0 else price_change(data[i - 1]["lastPrice"],
-                                                            data[i]["lastPrice"]),
-            'dayOfWeek': datetime.strptime(data[i]["timestamp"],
-                                           date_string_format).strftime('%A'),
+            'priceChange': "na" if i == 0 else price_change(data[i - 1]["lastPrice"], data[i]["lastPrice"]),
+            'dayOfWeek': datetime.strptime(data[i]["timestamp"], date_string_format).strftime('%A'),
             'highSinceStart': is_high_since_start(data[i]["lastPrice"]),
             'lowSinceStart': is_low_since_start(data[i]["lastPrice"])
         }
@@ -45,16 +45,14 @@ def price_change(prev, curr):
 
 
 def is_high_since_start(price):
-    global max_price
-    if price > max_price:
-        max_price = price
+    if price > g.max_price:
+        g.max_price = price
         return True
     return False
 
 
 def is_low_since_start(price):
-    global min_price
-    if price < min_price:
-        min_price = price
+    if price < g.min_price:
+        g.min_price = price
         return True
     return False
