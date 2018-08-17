@@ -39,3 +39,52 @@ Results ordered by oldest date first:
 - "day of week" is name of the day (Saturday, Tuesday, etc)
 
 - "high since start” / “low since start” is if this is the highest/lowest price since the oldest date in the list.
+
+Sample Usage
+---------------
+`http localhost:5000/api/bitcoins`
+
+```
+[
+    {
+        "change": "na",
+        "day": 1,
+        "dayOfWeek": "Thursday",
+        "highSinceStart": true,
+        "lowSinceStart": true,
+        "price": 6470.01,
+        "priceChange": "na"
+    },
+...
+    {
+        "change": -211.64,
+        "day": 100,
+        "dayOfWeek": "Wednesday",
+        "highSinceStart": false,
+        "lowSinceStart": false,
+        "price": 9156.16,
+        "priceChange": "down"
+    }
+]
+```
+
+
+Run
+---
+With docker:
+```
+docker-compose build
+docker-compose up
+Go to http://localhost:5000 and visit one of the above endpoints
+```
+
+Alternatively, set the `FLASK_APP` env variable
+to bitcoin_challenge.py, and install the python dependencies (e.g. `pip install
+-r requirements.txt`)
+
+
+`cd` into `./bitcoin_challenge` (if you are not already); then run:
+```
+flask run
+Go to http://localhost:5000 and visit api/bitcoins
+```
