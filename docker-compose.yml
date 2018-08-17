@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  web:
+    build: ./src
+    environment:
+      FLASK_APP_CONFIG: "config.ProductionConfig"
+
+  nginx:
+    build: ./src/nginx
+    depends_on:
+      - web
